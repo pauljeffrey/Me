@@ -1,6 +1,6 @@
-baseURL: jeffreypaul.io
+baseURL: jeffreypaul.github.io
 languageCode: en-us
-title: My New Hugo Site
+title: Jeffrey Paul
 theme: gruvhugo-master
 author: 
   linkedin: "https://linkedin.com/jeffpaul"
