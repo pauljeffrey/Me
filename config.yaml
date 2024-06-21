@@ -1,11 +1,11 @@
-baseURL: pauljeffrey.github.io
+baseURL: https://pauljeffrey.github.io
 languageCode: en-us
 title: Jeffrey Paul
 theme: gruvhugo-master
 author: 
   linkedin: "https://linkedin.com/jeffpaul"
   twitter: "https://twitter.com/jeffpaul"
-  name: " Jeff Paul"
+  name: " Jeffrey Paul"
   location: Lagos
 
 menu:
