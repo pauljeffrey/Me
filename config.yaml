@@ -20,7 +20,7 @@ menu:
       weight: 200
     - identifier: articles
       name: articles
-      url: /articles
+      url: /posts
     - identifier: resume
       name: resume
       url: /resume
