@@ -10,7 +10,7 @@ weight: 2
 
 Hi, I'm Jeffrey Paul, a Medical Doctor and AI Engineer/Researcher with a passion for merging the worlds of healthcare and artificial intelligence. With a robust 5-year track record, I have delivered innovative AI solutions across various domains, including audio, computer vision, and natural language processing. My work has contributed to over 7 research projects, demonstrating my expertise in research, problem-solving, and staying at the forefront of AI advancements.
 
-As the lead Engineer and Researcher behind SabiYarn, Nigeria's first LLM capable of text generation in multiple Nigerian languages, and the co-founder of Autobiz, a platform for business automation (SMEs), I am committed to pushing the boundaries of AI for meaningful societal impact.
+As the lead Engineer and Researcher behind <a href='https://huggingface.co/BeardedMonster/SabiYarn-125M'>SabiYarn</a>, Nigeria's first LLM capable of text generation in multiple Nigerian languages, and the co-founder of Autobiz, a platform for business automation (SMEs), I am committed to pushing the boundaries of AI for meaningful societal impact.
 
 ## Professional Background
 

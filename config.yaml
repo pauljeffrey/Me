@@ -3,9 +3,9 @@ languageCode: en-us
 title: Jeffrey Paul
 theme: gruvhugo-master
 author: 
-  linkedin: "https://linkedin.com/jeffpaul"
-  twitter: "https://twitter.com/jeffpaul"
-  name: " Jeffrey Paul"
+  linkedin: "https://www.linkedin.com/in/jeffreyotoibhi/"
+  twitter: "https://twitter.com/Jeffreypaul_"
+  name: "Jeffrey Paul"
   location: Lagos
 
 menu:
@@ -37,12 +37,12 @@ params:
    img: "images/jeffrey.jpg"
    img_title: "A portrait of myself"
    icon: "img/logo.png"
-   quote: "AI Engineer/ Researcher"
+   quote: "M.D | AI Engineer/ Researcher"
    description: "
 
-Hi, I'm Jeffrey Paul, a Medical Doctor and AI Engineer/Researcher with a passion for merging the worlds of healthcare and artificial intelligence. With a robust 5-year track record, I have delivered innovative AI solutions across various domains, including audio, computer vision, and natural language processing. My work has contributed to over 7 research projects, demonstrating my expertise in research, problem-solving, and staying at the forefront of AI advancements.
+    Hi, I'm Jeffrey Paul, a Medical Doctor and AI Engineer/Researcher with a passion for merging the worlds of healthcare and artificial intelligence. With a robust 5-year track record, I have delivered innovative AI solutions across various domains, including audio, computer vision, and natural language processing. My work has contributed to over 7 research projects, demonstrating my expertise in research, problem-solving, and staying at the forefront of AI advancements.
 
-As the lead Engineer and Researcher behind SabiYarn, Nigeria's first LLM capable of text generation in multiple Nigerian languages, and the co-founder of Autobiz, a platform for business automation (SMEs), I am committed to pushing the boundaries of AI for meaningful societal impact."
+    As the lead Engineer and Researcher behind <a href='https://huggingface.co/BeardedMonster/SabiYarn-125M'>SabiYarn</a>, Nigeria's first LLM capable of text generation in multiple Nigerian languages, and the co-founder of Autobiz, a platform for business automation (SMEs), I am committed to pushing the boundaries of AI for meaningful societal impact."
    licenseUrl: ""
  social:
   - name: "github"
@@ -52,7 +52,7 @@ As the lead Engineer and Researcher behind SabiYarn, Nigeria's first LLM capable
   - name: "twitter"
     url: "https://twitter.com/Jeffreypaul_"
   - name: "linkedin"
-    url: "https://www.linkedin.com/"
+    url: "https://www.linkedin.com/in/jeffreyotoibhi/"
  style:
    custom_css: [] # add path to custom CSS files here
    custom_scss: [] 
