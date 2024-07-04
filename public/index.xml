@@ -7,5 +7,166 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 03 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rotary Positional Embeddings</title>
+      <link>http://localhost:1313/post/rope/</link>
+      <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/post/rope/</guid>
+      <description>&lt;p&gt;Some texts&lt;/p&gt;
+&lt;h1 id=&#34;demystifying-rope-embeddings-a-comprehensive-guide&#34;&gt;Demystifying Rope Embeddings: A Comprehensive Guide&lt;/h1&gt;
+&lt;p&gt;Embeddings have become a cornerstone in the field of natural language processing (NLP), helping machines understand and process human language. Among the various types of embeddings, rope embeddings, positional embeddings, and trainable embeddings play crucial roles. In this article, we will explore rope embeddings in depth, understand their purpose, and compare them with positional and trainable embeddings.&lt;/p&gt;
+&lt;h2 id=&#34;introduction-to-embeddings&#34;&gt;Introduction to Embeddings&lt;/h2&gt;
+&lt;p&gt;Embeddings are a way to represent words, phrases, or even sentences as continuous vectors in a high-dimensional space. These vectors capture semantic meanings and relationships between different pieces of text. The idea is that similar words will have similar vector representations, allowing models to generalize better from the data.&lt;/p&gt;
+&lt;h2 id=&#34;what-are-rope-embeddings&#34;&gt;What Are Rope Embeddings?&lt;/h2&gt;
+&lt;p&gt;Rope embeddings, short for &amp;ldquo;Rotary Positional Embeddings,&amp;rdquo; are a type of positional encoding introduced to address the limitations of traditional positional embeddings in transformer models. They were proposed in the paper &amp;ldquo;Rotary Position Embedding&amp;rdquo; by Su et al. in 2021.&lt;/p&gt;
+&lt;h3 id=&#34;why-do-we-need-positional-information&#34;&gt;Why Do We Need Positional Information?&lt;/h3&gt;
+&lt;p&gt;Transformers, unlike recurrent neural networks (RNNs), do not have an inherent sense of the order of words in a sentence. Positional embeddings provide the necessary information about the position of each word in a sequence, allowing the model to understand word order and structure.&lt;/p&gt;
+&lt;h3 id=&#34;how-rope-embeddings-work&#34;&gt;How Rope Embeddings Work&lt;/h3&gt;
+&lt;p&gt;Rope embeddings use sinusoidal functions to encode positional information. The key idea is to represent positions as complex numbers on the unit circle. For a given position ( p ), the positional embedding is defined as:&lt;/p&gt;
+&lt;p&gt;[ E_p = [\sin(p \cdot \omega_k), \cos(p \cdot \omega_k)] ]&lt;/p&gt;
+&lt;p&gt;where ( \omega_k ) is a frequency specific to the dimension ( k ).&lt;/p&gt;
+&lt;p&gt;In practice, rope embeddings are applied by multiplying the word embeddings with the positional embeddings in a complex space. This multiplication introduces rotational invariance, making the embeddings robust to shifts and translations in the input sequence.&lt;/p&gt;
+&lt;h3 id=&#34;implementation&#34;&gt;Implementation&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch.nn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; nn
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;RopeEmbeddings&lt;/span&gt;(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Module):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, dim, max_len&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5000&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        super(RopeEmbeddings, self)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__init__()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dim
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, max_len, dtype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;float)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unsqueeze(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        div_term &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;exp(torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, dim, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;float() &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;log(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000.0&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; dim))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(max_len, dim)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pe[:, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;::&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sin(position &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; div_term)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pe[:, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;::&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cos(position &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; div_term)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;register_buffer(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pe&amp;#39;&lt;/span&gt;, pe)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;forward&lt;/span&gt;(self, x):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        seq_len &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;size(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pe[:seq_len, :]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unsqueeze(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rope_emb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; RopeEmbeddings(dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;512&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;input_tensor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn(&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;512&lt;/span&gt;)  &lt;span style=&#34;color:#75715e&#34;&gt;# Batch size: 32, Sequence length: 50, Embedding dimension: 512&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output_tensor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rope_emb(input_tensor)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(output_tensor&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;shape)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;benefits-of-rope-embeddings&#34;&gt;Benefits of Rope Embeddings&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Rotational Invariance&lt;/strong&gt;: Rope embeddings are invariant to rotations in the input, making them more robust to changes in word order.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Efficiency&lt;/strong&gt;: The sinusoidal functions are computationally efficient to compute and can be implemented with minimal overhead.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Generalization&lt;/strong&gt;: They generalize well to sequences longer than those seen during training, as the sinusoidal functions can naturally extrapolate beyond the training sequence length.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;positional-embeddings&#34;&gt;Positional Embeddings&lt;/h2&gt;
+&lt;p&gt;Positional embeddings are another way to encode positional information in transformer models. The most common approach, introduced in the original Transformer paper &amp;ldquo;Attention is All You Need&amp;rdquo; by Vaswani et al., uses fixed sinusoidal functions to represent positions.&lt;/p&gt;
+&lt;h3 id=&#34;how-positional-embeddings-work&#34;&gt;How Positional Embeddings Work&lt;/h3&gt;
+&lt;p&gt;Positional embeddings use sine and cosine functions of different frequencies to encode the position of each word in the sequence. For a position ( p ) and dimension ( i ), the positional embedding is defined as:&lt;/p&gt;
+&lt;p&gt;[ PE_{p, 2i} = \sin(p / 10000^{2i / d}) ]
+[ PE_{p, 2i+1} = \cos(p / 10000^{2i / d}) ]&lt;/p&gt;
+&lt;p&gt;where ( d ) is the dimension of the embeddings.&lt;/p&gt;
+&lt;h3 id=&#34;basic-implementation&#34;&gt;Basic Implementation&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch.nn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; nn
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;PositionalEmbeddings&lt;/span&gt;(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Module):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, dim, max_len&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;5000&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        super(PositionalEmbeddings, self)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__init__()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; dim
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        position &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, max_len, dtype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;float)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unsqueeze(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        div_term &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;exp(torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, dim, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;float() &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;(math&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;log(&lt;span style=&#34;color:#ae81ff&#34;&gt;10000.0&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; dim))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;zeros(max_len, dim)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pe[:, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;::&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sin(position &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; div_term)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        pe[:, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;::&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cos(position &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; div_term)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;register_buffer(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;pe&amp;#39;&lt;/span&gt;, pe)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;forward&lt;/span&gt;(self, x):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        seq_len &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;size(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;pe[:seq_len, :]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unsqueeze(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; x
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pos_emb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; PositionalEmbeddings(dim&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;512&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;input_tensor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randn(&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;512&lt;/span&gt;)  &lt;span style=&#34;color:#75715e&#34;&gt;# Batch size: 32, Sequence length: 50, Embedding dimension: 512&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output_tensor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pos_emb(input_tensor)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(output_tensor&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;shape)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;benefits-of-positional-embeddings&#34;&gt;Benefits of Positional Embeddings&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Simplicity&lt;/strong&gt;: They are straightforward to implement and integrate into transformer models.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fixed Representation&lt;/strong&gt;: The fixed nature of the embeddings ensures that the model can generalize to unseen sequences of different lengths.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;limitations-of-positional-embeddings&#34;&gt;Limitations of Positional Embeddings&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Lack of Rotational Invariance&lt;/strong&gt;: Fixed positional embeddings do not handle shifts or translations in the input sequence well.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Limited Flexibility&lt;/strong&gt;: They are not adaptable to different sequence lengths or varying contexts as well as other methods.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;trainable-embeddings&#34;&gt;Trainable Embeddings&lt;/h2&gt;
+&lt;p&gt;Trainable embeddings, also known as learned embeddings, are vectors that are learned during the training process. These embeddings can represent words, subwords, or even positions in a sequence.&lt;/p&gt;
+&lt;h3 id=&#34;how-trainable-embeddings-work&#34;&gt;How Trainable Embeddings Work&lt;/h3&gt;
+&lt;p&gt;In a trainable embedding layer, each word or token in the vocabulary is associated with a vector that is initialized randomly and updated during training. For positional information, a separate set of trainable embeddings can be used to represent the position of each token.&lt;/p&gt;
+&lt;h3 id=&#34;basic-implementation-1&#34;&gt;Basic Implementation&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; torch.nn &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; nn
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TrainableEmbeddings&lt;/span&gt;(nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Module):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; __init__(self, vocab_size, dim):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        super(TrainableEmbeddings, self)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__init__()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;embedding &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Embedding(vocab_size, dim)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;forward&lt;/span&gt;(self, x):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; self&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;embedding(x)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vocab_size &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Size of the vocabulary&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;dim &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;512&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# Embedding dimension&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;trainable_emb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; TrainableEmbeddings(vocab_size, dim)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;input_tensor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; torch&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;randint(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, vocab_size, (&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;))  &lt;span style=&#34;color:#75715e&#34;&gt;# Batch size: 32, Sequence length: 50&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output_tensor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; trainable_emb(input_tensor)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(output_tensor&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;shape)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;benefits-of-trainable-embeddings&#34;&gt;Benefits of Trainable Embeddings&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Flexibility&lt;/strong&gt;: They can capture more complex patterns and relationships in the data since they are learned directly from the training data.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Adaptability&lt;/strong&gt;: They can adapt to specific tasks and datasets, potentially leading to better performance.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;limitations-of-trainable-embeddings&#34;&gt;Limitations of Trainable Embeddings&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Overfitting&lt;/strong&gt;: They can overfit to the training data, especially with limited training samples.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Computational Cost&lt;/strong&gt;: Training embeddings from scratch requires more computational resources and time.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;comparing-rope-embeddings-positional-embeddings-and-trainable-embeddings&#34;&gt;Comparing Rope Embeddings, Positional Embeddings, and Trainable Embeddings&lt;/h2&gt;
+&lt;h3 id=&#34;purpose&#34;&gt;Purpose&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Rope Embeddings&lt;/strong&gt;: Encode positional information with rotational invariance and robustness.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Positional Embeddings&lt;/strong&gt;: Encode fixed positional information using sinusoidal functions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Trainable Embeddings&lt;/strong&gt;: Learn representations directly from data, including positional information if needed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;implementation-1&#34;&gt;Implementation&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Rope Embeddings&lt;/strong&gt;: Use sinusoidal functions to represent positions as complex numbers, multiplying with word embeddings.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Positional Embeddings&lt;/strong&gt;: Use fixed sine and cosine functions to encode positions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Trainable Embeddings&lt;/strong&gt;: Use a lookup table where each token and position has a learned vector.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;generalization&#34;&gt;Generalization&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Rope Embeddings&lt;/strong&gt;: Generalize well to unseen sequence lengths due to the nature of sinusoidal functions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Positional Embeddings&lt;/strong&gt;: Generalize reasonably well, but less adaptable to different contexts.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Trainable Embeddings&lt;/strong&gt;: Highly adaptable but prone to overfitting without sufficient data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;computational-efficiency&#34;&gt;Computational Efficiency&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Rope Embeddings&lt;/strong&gt;: Efficient to compute and integrate into models.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Positional Embeddings&lt;/strong&gt;: Computationally efficient due to fixed functions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Trainable Embeddings&lt;/strong&gt;: More computationally expensive due to the need for training and updating embeddings.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Rope embeddings offer a robust and efficient way to encode positional information in transformer models, providing advantages over traditional positional embeddings in terms of rotational invariance and generalization. While trainable embeddings offer flexibility and adaptability, they come with the risk of overfitting and higher computational costs.&lt;/p&gt;
+&lt;p&gt;Understanding the strengths and limitations of each type of embedding is crucial for selecting the right approach for your NLP tasks. Rope embeddings, with their unique properties, are a valuable addition to the arsenal of techniques available to NLP practitioners, helping to improve the performance and robustness of transformer-based models.&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>

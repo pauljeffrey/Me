@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Jeffrey Paul</title>
-    <link>http://localhost:1313/post/</link>
-    <description>Recent content in Posts on Jeffrey Paul</description>
+    <title>Articles on Jeffrey Paul</title>
+    <link>http://localhost:1313/articles/</link>
+    <description>Recent content in Articles on Jeffrey Paul</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 03 Jul 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/articles/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Rotary Positional Embeddings</title>
-      <link>http://localhost:1313/post/rope/</link>
+      <link>http://localhost:1313/articles/rope/</link>
       <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/rope/</guid>
+      <guid>http://localhost:1313/articles/rope/</guid>
       <description>Some texts&#xA;Demystifying Rope Embeddings: A Comprehensive Guide Embeddings have become a cornerstone in the field of natural language processing (NLP), helping machines understand and process human language. Among the various types of embeddings, rope embeddings, positional embeddings, and trainable embeddings play crucial roles. In this article, we will explore rope embeddings in depth, understand their purpose, and compare them with positional and trainable embeddings.&#xA;Introduction to Embeddings Embeddings are a way to represent words, phrases, or even sentences as continuous vectors in a high-dimensional space.</description>
+    </item>
+    <item>
+      <title>Learning to smell from Molecules </title>
+      <link>http://localhost:1313/articles/example/</link>
+      <pubDate>Tue, 15 Aug 2023 04:14:46 +0100</pubDate>
+      <guid>http://localhost:1313/articles/example/</guid>
+      <description>The title of this post might be a little confusing but what we are really going to do is to try and build a model to classify smells from their molecular compounds. This little project intertwines the realms of chemistry and machine learning,&#xA;Our noses have more than 400 types of olfactory receptors expressed in 1 million+ olfactory sensory neurons, which are all on a small tissue - olfactory epithelium.</description>
     </item>
   </channel>
 </rss>

@@ -18,9 +18,9 @@ menu:
       name: projects
       url: /projects
       weight: 200
-    - identifier: articles
-      name: articles
-      url: /posts
+    - identifier: post
+      name: post
+      url: /post
     - identifier: resume
       name: resume
       url: /resume
