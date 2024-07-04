@@ -3,11 +3,14 @@ author: "Paul Jeffrey"
 title: "Rotary Positional Embeddings"
 date: "2024-07-03"
 description: "Demystifying RoPE Embeddings"
+draft: false
+math: true
 tags: [
     "transformers","natural language processing"
 ]
-
 ---
+
+Some texts
 
 # Demystifying Rope Embeddings: A Comprehensive Guide
 

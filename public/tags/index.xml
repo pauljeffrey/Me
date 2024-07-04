@@ -22,12 +22,5 @@
       <guid>http://localhost:1313/tags/transformers/</guid>
       <description></description>
     </item>
-    <item>
-      <title>Emoji</title>
-      <link>http://localhost:1313/tags/emoji/</link>
-      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/emoji/</guid>
-      <description></description>
-    </item>
   </channel>
 </rss>
