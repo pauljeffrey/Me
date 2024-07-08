@@ -16,7 +16,7 @@ menu:
       weight: 100
     - identifier: projects
       name: projects
-      url: /projects
+      url: /projects/
       weight: 200
     - identifier: post
       name: post

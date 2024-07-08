@@ -22,6 +22,21 @@
     <loc>http://localhost:1313/tags/transformers/</loc>
     <lastmod>2024-07-03T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/tags/neural-networks/</loc>
+    <lastmod>2024-02-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/sentence-segmentation/</loc>
+    <lastmod>2024-02-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/word-segmentation/</loc>
+    <lastmod>2024-02-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/word-segmentation/</loc>
+    <lastmod>2024-02-03T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/true-casing/</loc>
+    <lastmod>2024-02-03T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url>
 </urlset>
