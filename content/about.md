@@ -64,7 +64,7 @@ engineer.
 
 ## Blog and Knowledge Sharing
 
-I regularly write articles on AI, machine learning, and data science on my [blog](#). My articles aim to simplify complex concepts and share practical insights with the community. I am currently working on a project to model the probability distribution of thoughts and reasoning.
+I regularly write articles on AI, machine learning, and data science on my <a href="/projects">blog</a>. My articles aim to simplify complex concepts and share practical insights with the community. I am currently working on a project to model the probability distribution of thoughts and reasoning.
 
 ## Personal Interests
 
