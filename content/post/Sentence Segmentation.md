@@ -1,7 +1,7 @@
 ---
 author: "Paul Jeffrey"
 title: "Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)"
-date: "2023-03-14"
+date: "2023-11-21"
 draft: false
 description: "A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)"
 tags: [
