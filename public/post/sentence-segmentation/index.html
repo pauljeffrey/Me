@@ -8,7 +8,7 @@
     <meta property="og:site_name" content="Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)" />
     <meta property="og:title" content="Jeffrey Paul" />
     <meta property="og:description" content="Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2) In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project&amp;rsquo;s article, you can find it here ." />
-    <meta property="og:image" content="http://localhost:1313/images/jeffrey.jpg" />
+    <meta property="og:image" content="http://localhost:1313/images/jeff2.jpg" />
     <meta name="keywords"
           content="" />
     
@@ -121,14 +121,14 @@
 
 <div class="content">
   <h1 id="title-unraveling-the-secrets-of-raw-text-a-journey-through-word-sentence-segmentation-and-capitalization-with-python-part-2">Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)</h1>
-<p>In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project&rsquo;s article, you can find it <!-- raw HTML omitted --> here <!-- raw HTML omitted -->. I advice that you follow the first part of this project first before reading this. In this article, we are going to focus on predicting/forming full sentences given a corpus of words (without sentence demarcations) predicted by our &ldquo;word segmentor&rdquo; model from a raw sequence of text characters. We will call this text segmentation.</p>
+<p>In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project&rsquo;s article, you can find it  here . I advice that you follow the first part of this project first before reading this. In this article, we are going to focus on predicting/forming full sentences given a corpus of words (without sentence demarcations) predicted by our &ldquo;word segmentor&rdquo; model from a raw sequence of text characters. We will call this text segmentation.</p>
 <p>Example:
 <code>My name is mary I am 10 years old I live in Nigeria</code>
 is segmented into
 <code>My name is mary. I am 10 years old. I live in Nigeria.</code></p>
 <h2 id="introduction">Introduction</h2>
 <p>Once the words have been predicted by the &ldquo;word segmentor&rdquo; model, the next challenge is to segment these words into meaningful sentences. This is crucial for understanding the context and flow of the text.</p>
-<p>For this task, we utilize a combination of rule-based and machine learning techniques. Rule-based methods involve defining a set of rules that identify sentence boundaries based on punctuation marks, conjunctions, and other linguistic cues. Machine learning methods, on the other hand, train a model on annotated data to predict sentence boundaries. We will be making use of the brown corpus (found in the NLTK library) as we did in the <!-- raw HTML omitted -->last article<!-- raw HTML omitted -->.</p>
+<p>For this task, we utilize a combination of rule-based and machine learning techniques. Rule-based methods involve defining a set of rules that identify sentence boundaries based on punctuation marks, conjunctions, and other linguistic cues. Machine learning methods, on the other hand, train a model on annotated data to predict sentence boundaries. We will be making use of the brown corpus (found in the NLTK library) as we did in the last article.</p>
 <p>Let&rsquo;s go!</p>
 <p>We will be preparing data mostly in the same format as in the previous article to extract features from data. Here, we are also going to be extracting features from the neighbouring words.</p>
 <p>In addition to all the calculations we made in the previous article during feature extraction, we are going to make use of the &lsquo;Part of Speech&rsquo; tags of each word here. This POS tags come with every word in the brown corpus. For the modelling of commas and full stop insertions, this POS tags play a huge role. For example, we know that many principles of use of the comma punctuation mark solely involves the identification of the part of speech of the words. We will also be using the length of words, tag congruity between neigbouring words etc. Everything is documented below. Please read through the code to understand the concepts and ideas.</p>

@@ -2,7 +2,7 @@
 author: "Paul Jeffrey"
 title: "Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)"
 date: "2024-02-06"
-draft: False
+draft: false
 description: "A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)"
 tags: [
     "neural networks","natural language processing","word segmentation"
@@ -12,7 +12,7 @@ tags: [
 
 # Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)
 
-In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project's article, you can find it <a href="/projects/Word Segmentation.md"> here </a>. I advice that you follow the first part of this project first before reading this. In this article, we are going to focus on predicting/forming full sentences given a corpus of words (without sentence demarcations) predicted by our "word segmentor" model from a raw sequence of text characters. We will call this text segmentation.
+In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project's article, you can find it  here . I advice that you follow the first part of this project first before reading this. In this article, we are going to focus on predicting/forming full sentences given a corpus of words (without sentence demarcations) predicted by our "word segmentor" model from a raw sequence of text characters. We will call this text segmentation.
 
 Example:
 ```My name is mary I am 10 years old I live in Nigeria``` 
@@ -24,7 +24,7 @@ is segmented into
 
 Once the words have been predicted by the "word segmentor" model, the next challenge is to segment these words into meaningful sentences. This is crucial for understanding the context and flow of the text.
 
-For this task, we utilize a combination of rule-based and machine learning techniques. Rule-based methods involve defining a set of rules that identify sentence boundaries based on punctuation marks, conjunctions, and other linguistic cues. Machine learning methods, on the other hand, train a model on annotated data to predict sentence boundaries. We will be making use of the brown corpus (found in the NLTK library) as we did in the <a href="/projects/Word Segmentation.md">last article</a>.
+For this task, we utilize a combination of rule-based and machine learning techniques. Rule-based methods involve defining a set of rules that identify sentence boundaries based on punctuation marks, conjunctions, and other linguistic cues. Machine learning methods, on the other hand, train a model on annotated data to predict sentence boundaries. We will be making use of the brown corpus (found in the NLTK library) as we did in the last article.
 
 Let's go!
 

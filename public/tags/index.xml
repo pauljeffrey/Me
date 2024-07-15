@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on </title>
+    <title>Tags on Jeffrey Paul</title>
     <link>http://localhost:1313/tags/</link>
-    <description>Recent content in Tags on </description>
+    <description>Recent content in Tags on Jeffrey Paul</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
-<<<<<<< HEAD
-=======
     <item>
-      <title>Natural Language Processing</title>
-      <link>http://localhost:1313/tags/natural-language-processing/</link>
-      <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/natural-language-processing/</guid>
+      <title>Index</title>
+      <link>http://localhost:1313/tags/index/</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/index/</guid>
       <description></description>
     </item>
     <item>
-      <title>Transformers</title>
-      <link>http://localhost:1313/tags/transformers/</link>
-      <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/transformers/</guid>
+      <title>Natural Language Processing</title>
+      <link>http://localhost:1313/tags/natural-language-processing/</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/natural-language-processing/</guid>
       <description></description>
     </item>
     <item>
@@ -37,6 +36,5 @@
       <guid>http://localhost:1313/tags/word-segmentation/</guid>
       <description></description>
     </item>
->>>>>>> cd2c24c6e4afac690d52245aba6c78fd57931178
   </channel>
 </rss>

@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title></title>
+    <title>Jeffrey Paul</title>
     <link>http://localhost:1313/</link>
-    <description>Recent content on </description>
+    <description>Recent posts from on Jeffrey Paul</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 23 Jun 2024 14:38:33 +0200</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Sample blog content 1</title>
-      <link>http://localhost:1313/blog/sample/</link>
-      <pubDate>Sun, 23 Jun 2024 14:38:33 +0200</pubDate>
-      <guid>http://localhost:1313/blog/sample/</guid>
-      <description>Sample blog content. Like a lorem ipsum but saying something more interesting.&#xA;Welcome to the world of &amp;ldquo;Content Ipsum,&amp;rdquo; the fresh alternative to the classic lorem ipsum. It&amp;rsquo;s the perfect blend for designers and writers who crave a dash of creativity and meaning in their placeholder text. Imagine a text that not only fills the space but also sparks the imagination, a text that weaves tales of innovation, inspiration, and the endless possibilities that creativity brings.</description>
-    </item>
-<<<<<<< HEAD
-=======
-    
+    <lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)</title>
       <link>http://localhost:1313/post/sentence-segmentation/</link>
@@ -25,14 +14,14 @@
       
       <guid>http://localhost:1313/post/sentence-segmentation/</guid>
       <description>&lt;h1 id=&#34;title-unraveling-the-secrets-of-raw-text-a-journey-through-word-sentence-segmentation-and-capitalization-with-python-part-2&#34;&gt;Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)&lt;/h1&gt;
-&lt;p&gt;In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project&amp;rsquo;s article, you can find it &lt;!-- raw HTML omitted --&gt; here &lt;!-- raw HTML omitted --&gt;. I advice that you follow the first part of this project first before reading this. In this article, we are going to focus on predicting/forming full sentences given a corpus of words (without sentence demarcations) predicted by our &amp;ldquo;word segmentor&amp;rdquo; model from a raw sequence of text characters. We will call this text segmentation.&lt;/p&gt;
+&lt;p&gt;In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project&amp;rsquo;s article, you can find it  here . I advice that you follow the first part of this project first before reading this. In this article, we are going to focus on predicting/forming full sentences given a corpus of words (without sentence demarcations) predicted by our &amp;ldquo;word segmentor&amp;rdquo; model from a raw sequence of text characters. We will call this text segmentation.&lt;/p&gt;
 &lt;p&gt;Example:
 &lt;code&gt;My name is mary I am 10 years old I live in Nigeria&lt;/code&gt;
 is segmented into
 &lt;code&gt;My name is mary. I am 10 years old. I live in Nigeria.&lt;/code&gt;&lt;/p&gt;
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Once the words have been predicted by the &amp;ldquo;word segmentor&amp;rdquo; model, the next challenge is to segment these words into meaningful sentences. This is crucial for understanding the context and flow of the text.&lt;/p&gt;
-&lt;p&gt;For this task, we utilize a combination of rule-based and machine learning techniques. Rule-based methods involve defining a set of rules that identify sentence boundaries based on punctuation marks, conjunctions, and other linguistic cues. Machine learning methods, on the other hand, train a model on annotated data to predict sentence boundaries. We will be making use of the brown corpus (found in the NLTK library) as we did in the &lt;!-- raw HTML omitted --&gt;last article&lt;!-- raw HTML omitted --&gt;.&lt;/p&gt;
+&lt;p&gt;For this task, we utilize a combination of rule-based and machine learning techniques. Rule-based methods involve defining a set of rules that identify sentence boundaries based on punctuation marks, conjunctions, and other linguistic cues. Machine learning methods, on the other hand, train a model on annotated data to predict sentence boundaries. We will be making use of the brown corpus (found in the NLTK library) as we did in the last article.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s go!&lt;/p&gt;
 &lt;p&gt;We will be preparing data mostly in the same format as in the previous article to extract features from data. Here, we are also going to be extracting features from the neighbouring words.&lt;/p&gt;
 &lt;p&gt;In addition to all the calculations we made in the previous article during feature extraction, we are going to make use of the &amp;lsquo;Part of Speech&amp;rsquo; tags of each word here. This POS tags come with every word in the brown corpus. For the modelling of commas and full stop insertions, this POS tags play a huge role. For example, we know that many principles of use of the comma punctuation mark solely involves the identification of the part of speech of the words. We will also be using the length of words, tag congruity between neigbouring words etc. Everything is documented below. Please read through the code to understand the concepts and ideas.&lt;/p&gt;
@@ -1569,6 +1558,5 @@ We will use the first genre of the brown corpus for this. We will extract the te
 </description>
     </item>
     
->>>>>>> cd2c24c6e4afac690d52245aba6c78fd57931178
   </channel>
 </rss>

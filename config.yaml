@@ -20,7 +20,7 @@ menu:
       weight: 200
     - identifier: post
       name: post
-      url: /post
+      url: /post/
     - identifier: resume
       name: resume
       url: /resume
@@ -34,7 +34,7 @@ params:
    headerTitle: "Jeffrey Paul"
    copyright: "© 2024 Jeffrey Paul.  <a href=\"https://creativecommons.org/licenses/by/4.0/\">Some rights reserved</a>."
    name: "Jeffrey Paul"
-   img: "images/jeffrey.jpg"
+   img: "images/jeff2.jpg"
    img_title: "A portrait of myself"
    icon: "img/logo.png"
    quote: "M.D | AI Engineer/ Researcher"

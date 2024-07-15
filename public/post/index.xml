@@ -6,15 +6,8 @@
     <description>Recent content in Posts on Jeffrey Paul</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 03 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 06 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Rotary Positional Embeddings</title>
-      <link>http://localhost:1313/post/rope/</link>
-      <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/rope/</guid>
-      <description>Some texts&#xA;Demystifying Rope Embeddings: A Comprehensive Guide Embeddings have become a cornerstone in the field of natural language processing (NLP), helping machines understand and process human language. Among the various types of embeddings, rope embeddings, positional embeddings, and trainable embeddings play crucial roles. In this article, we will explore rope embeddings in depth, understand their purpose, and compare them with positional and trainable embeddings.&#xA;Introduction to Embeddings Embeddings are a way to represent words, phrases, or even sentences as continuous vectors in a high-dimensional space.</description>
-    </item>
     <item>
       <title>Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)</title>
       <link>http://localhost:1313/post/sentence-segmentation/</link>
