@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang=""><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
+    <title>Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3) | Jeffrey Paul</title>
+    <meta name="description" content="Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3)">
+    <meta property="og:site_name" content="Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3)" />
+    <meta property="og:title" content="Jeffrey Paul" />
+    <meta property="og:description" content="Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3) Introduction The final piece of the puzzle is to capitalize the first letter of each sentence and other words that need to be cased (e.g nouns). This not only enhances readability but also provides valuable contextual information. By the way, if you have not checked out the first 2 parts of this lovely project&amp;rsquo;s article, you can find it here ." />
+    <meta property="og:image" content="http://localhost:1313/images/jeffrey.jpg" />
+    <meta name="keywords"
+          content="" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"
+        integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"
+          crossorigin="anonymous">
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"
+        integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"
+        crossorigin="anonymous">
+    </script>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"
+        integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);">
+    </script>
+    
+    <meta name="keywords" content="fast, hugo, theme, minimal, gruvbox">
+    <link rel="icon" type="image/svg" href='http://localhost:1313/img/logo.png' />
+    <meta name="author" content='Jeffrey Paul'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.124.1">
+    
+    <link rel="stylesheet" href="http://localhost:1313/sass/main.min.a669fc379ca0ba4d389af69be2682407e7bca16d368f2e7ad5b83c0cd80029b3.css" type="text/css" media="screen">
+
+    
+
+    
+
+    
+    </head>
+<body>
+      <div class="line" id="scrollIndicator"></div>
+      <div class="main"><div class="title">
+  <div class="name">
+    <h2><a href="http://localhost:1313/"
+	   style="text-decoration: none; color: inherit;">Jeffrey Paul</a></h2>
+  </div>
+  <div class="color-scheme">
+    <input type="checkbox" class="checkbox" id="chk" />
+    <label class="label" for="chk">
+						<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="moon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"></path></svg>
+						<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sun" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 160c-52.9 0-96 43.1-96
+										96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"></path></svg>
+      <div class="ball"></div>
+    </label>
+  </div>
+</div>
+<script>
+  const themeSetter = (theme) => {
+      document.body.classList.toggle('dark')
+      localStorage.setItem('theme', theme)
+      blockSwitcher()
+  }
+
+  const blockSwitcher = () => [...document.getElementsByTagName("BLOCKQUOTE")]
+	.forEach(b => b.classList.toggle('dark'))
+
+  const styleSwapper = () => {
+      document.body.classList.add('back-transition')
+      if (localStorage.getItem('theme') === 'dark') themeSetter('light')
+      else if (localStorage.getItem('theme') === 'light') themeSetter('dark')
+  }
+
+  if (localStorage.getItem('theme') === 'dark'){
+      themeSetter('dark')
+      document.addEventListener("DOMContentLoaded", blockSwitcher)
+  }
+ else localStorage.setItem('theme', 'light')
+
+  document.getElementById('chk').addEventListener('change',styleSwapper);
+
+  window.addEventListener("scroll", () => {
+      let height = document.documentElement.scrollHeight
+          - document.documentElement.clientHeight;
+      if(height >= 500){
+	  let winScroll = document.body.scrollTop
+              || document.documentElement.scrollTop;
+	  let scrolled = (winScroll / height) * 100;
+	  document.getElementById("scrollIndicator").style.width = scrolled + "%";
+      }
+  });
+</script>
+
+<section class="intro">
+  
+<div>
+  <h1 id="title-unraveling-the-secrets-of-raw-text-a-journey-through-word-sentence-segmentation-and-capitalization-with-python-part-3">Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3)</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The final piece of the puzzle is to capitalize the first letter of each sentence and other words that need to be cased (e.g nouns). This not only enhances readability but also provides valuable contextual information.
+By the way, if you have not checked out the first 2 parts of this lovely project&rsquo;s article, you can find it <!-- raw HTML omitted --> here <!-- raw HTML omitted -->. I advice that you follow the previous parts of this project first before reading this last one.</p>
+<p>To achieve this, We are going to train a model using the following principles/assumptions of true casing of words:</p>
+<ul>
+<li>The first letter of the first word after a &lsquo;.&rsquo;,&rsquo;!&rsquo;,&rsquo;?&rsquo; (beginning of a sentence) is always capitalized.</li>
+<li>Names and other proper nouns should be capitalized.</li>
+<li>Words after a colon should not be capitalized.</li>
+<li>Capitalize the first word of a quote.</li>
+<li>Capitalize months , days but not seasons.</li>
+</ul>
+<p>Therefore, we create functions to extract some of these information for our model. To save time, I will leave them here but please take your time to go through each of them to understand what they do.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>months <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;january&#39;</span>, <span style="color:#e6db74">&#39;february&#39;</span>,<span style="color:#e6db74">&#39;march&#39;</span>,<span style="color:#e6db74">&#39;april&#39;</span>,<span style="color:#e6db74">&#39;may&#39;</span>,<span style="color:#e6db74">&#39;june&#39;</span>,<span style="color:#e6db74">&#39;july&#39;</span>,<span style="color:#e6db74">&#39;august&#39;</span>,<span style="color:#e6db74">&#39;september&#39;</span>,<span style="color:#e6db74">&#39;october&#39;</span>,<span style="color:#e6db74">&#39;november&#39;</span>,<span style="color:#e6db74">&#39;december&#39;</span>]
+</span></span><span style="display:flex;"><span>days <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;monday&#39;</span>,<span style="color:#e6db74">&#39;tuesday&#39;</span>, <span style="color:#e6db74">&#39;wednesday&#39;</span>,<span style="color:#e6db74">&#39;thursday&#39;</span>,<span style="color:#e6db74">&#39;friday&#39;</span>,<span style="color:#e6db74">&#39;saturday&#39;</span>,<span style="color:#e6db74">&#39;sunday&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># These punctuations separate sentences in english language.</span>
+</span></span><span style="display:flex;"><span>sent_separator <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;.&#39;</span>,<span style="color:#e6db74">&#39;!&#39;</span>,<span style="color:#e6db74">&#39;?&#39;</span>,<span style="color:#e6db74">&#39;UNK&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># function checks if a word begins a sentence.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">begins_sentence</span>(row):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> row[<span style="color:#e6db74">&#39;pre-1 words&#39;</span>] <span style="color:#f92672">in</span> sent_separator:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># if the word is a month or day</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_month_day</span>(word):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> ( word <span style="color:#f92672">in</span> months ) <span style="color:#f92672">or</span> (word <span style="color:#f92672">in</span> days):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># If the word is a proper noun</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">is_proper_noun</span>(word):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> word <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;NNP&#39;</span> <span style="color:#f92672">or</span> word <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;NP&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># if the word comes after quotes</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">supersede_quote</span>(row):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> row[<span style="color:#e6db74">&#39;pre-1 words&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;&#39;&#34;</span> <span style="color:#f92672">or</span> row[<span style="color:#e6db74">&#39;pre-1 words&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;&#34;&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># if the word comes after a colon</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">after_colon</span>(row):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> row[<span style="color:#e6db74">&#39;pre-1 words&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;:&#39;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># function to check if word is a symbol or digit:</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_digit_sym</span>(word):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (word <span style="color:#f92672">in</span> punctuations) <span style="color:#f92672">or</span> (word <span style="color:#f92672">in</span> symbols) :
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">elif</span> word<span style="color:#f92672">.</span>isdigit():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">False</span>
+</span></span></code></pre></div><p>Now, we extract and process the train and test data</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>corpus <span style="color:#f92672">=</span> ext_tagged_corpus(<span style="color:#ae81ff">8</span>) <span style="color:#75715e"># extract corpus</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>words, tags, target_data <span style="color:#f92672">=</span> create_sent_data(corpus, casing<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">del</span> corpus
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>sent_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#39;words&#39;</span>: words, <span style="color:#e6db74">&#39;tags&#39;</span>: tags}) <span style="color:#75715e"># create dataframe</span>
+</span></span><span style="display:flex;"><span>sent_df<span style="color:#f92672">.</span>head()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>Some functions from the word segmentation model were used here also.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_case_data</span>(df,n_gram<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,fill_value <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;WRB+DOZ&#39;</span>):
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Extract all features as described earlier</span>
+</span></span><span style="display:flex;"><span>  df[<span style="color:#e6db74">&#39;is_month_day&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;words&#39;</span>]<span style="color:#f92672">.</span>apply(is_month_day)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#df[&#39;is_digit_sym&#39;]  = df[&#39;words&#39;].apply(check_digit_sym)</span>
+</span></span><span style="display:flex;"><span>  df[<span style="color:#e6db74">&#39;is_proper_noun&#39;</span>]  <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;tags&#39;</span>]<span style="color:#f92672">.</span>apply(is_proper_noun)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># block of code extract context and its features (words around index word)</span>
+</span></span><span style="display:flex;"><span>  df <span style="color:#f92672">=</span> extract_context(df, <span style="color:#e6db74">&#39;words&#39;</span>,<span style="color:#e6db74">&#39;words&#39;</span>, n_gram<span style="color:#f92672">=</span>n_gram,fill_value<span style="color:#f92672">=</span>fill_value)
+</span></span><span style="display:flex;"><span>  df <span style="color:#f92672">=</span> extract_context(df, <span style="color:#e6db74">&#39;tags&#39;</span>,<span style="color:#e6db74">&#39;tags&#39;</span>, n_gram<span style="color:#f92672">=</span>n_gram,fill_value<span style="color:#f92672">=</span>fill_value)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Extract all features as described earlier</span>
+</span></span><span style="display:flex;"><span>  df[<span style="color:#e6db74">&#39;after_colon&#39;</span>] <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>apply(after_colon,<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>  df[<span style="color:#e6db74">&#39;supersed_quote&#39;</span>] <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>apply(supersede_quote,<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>  df[<span style="color:#e6db74">&#39;begins_sentence&#39;</span>] <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>apply(begins_sentence,<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Drop all irrelevant columns</span>
+</span></span><span style="display:flex;"><span>  drop <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;post-1 words&#39;</span>]
+</span></span><span style="display:flex;"><span>  drop<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#39;pre-1 words&#39;</span>)
+</span></span><span style="display:flex;"><span>  drop<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#39;post-1 tags&#39;</span>) <span style="color:#75715e"># we remove the tags that come after word and leave the one that comes before.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  drop<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#39;words&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  df <span style="color:#f92672">=</span> drop_column(df, drop)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> df
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>train <span style="color:#f92672">=</span> process_case_data(sent_df)
+</span></span><span style="display:flex;"><span>train<span style="color:#f92672">.</span>head()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Also save tags for this model</span>
+</span></span><span style="display:flex;"><span>case_tag_list <span style="color:#f92672">=</span> train[<span style="color:#e6db74">&#39;tags&#39;</span>]
+</span></span><span style="display:flex;"><span>save_to_file(case_tag_list, os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;case_tag_list&#39;</span>))
+</span></span></code></pre></div><p>Since all columns are categorical , we pass it through an ordinal and one hot encoder first we append &lsquo;UNK&rsquo; to the tags column for general representaton of tags.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>case_cat_value <span style="color:#f92672">=</span> [list(train[col]<span style="color:#f92672">.</span>unique()) <span style="color:#66d9ef">for</span> col <span style="color:#f92672">in</span> train<span style="color:#f92672">.</span>columns]
+</span></span><span style="display:flex;"><span>case_cat_value[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>append(<span style="color:#e6db74">&#39;UNK&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> col <span style="color:#f92672">in</span> case_cat_value:
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    col<span style="color:#f92672">.</span>sort()
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># preprocess data by passing through encoder transformer</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>case_pipeline <span style="color:#f92672">=</span> Pipeline([(<span style="color:#e6db74">&#39;ordinal_encoder&#39;</span>, OrdinalEncoder()),
+</span></span><span style="display:flex;"><span>                          (<span style="color:#e6db74">&#39;one hot&#39;</span>, OneHotEncoder())])
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Fit transformer to data.</span>
+</span></span><span style="display:flex;"><span>train <span style="color:#f92672">=</span> case_pipeline<span style="color:#f92672">.</span>fit_transform(train)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Save transformer to file</span>
+</span></span><span style="display:flex;"><span>transformer_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;case_pipeline&#39;</span>)
+</span></span><span style="display:flex;"><span>save_to_file(case_pipeline,transformer_path)
+</span></span></code></pre></div><p>Split data into train and test</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Convert target_data variables from string format to numerical format</span>
+</span></span><span style="display:flex;"><span>target_data <span style="color:#f92672">=</span> to_cat(target_data, case_cat_targ)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># change target to categorical format (One hot encoding)</span>
+</span></span><span style="display:flex;"><span>target_data <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>utils<span style="color:#f92672">.</span>to_categorical(target_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Split data into train and test set</span>
+</span></span><span style="display:flex;"><span>X_train, X_test , y_train, y_test  <span style="color:#f92672">=</span> train_test_split(train, target_data, test_size<span style="color:#f92672">=</span> <span style="color:#ae81ff">0.15</span>,
+</span></span><span style="display:flex;"><span>                                                      random_state<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>,shuffle<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>X_train
+</span></span></code></pre></div><pre tabindex="0"><code>&lt;619288x890 sparse matrix of type &#39;&lt;class &#39;numpy.float64&#39;&gt;&#39;
+	with 4335016 stored elements in Compressed Sparse Row format&gt;
+</code></pre><p>Again, we create our model with the previous function <!-- raw HTML omitted -->Part 1<!-- raw HTML omitted --></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Get input and output dim</span>
+</span></span><span style="display:flex;"><span>input_dim <span style="color:#f92672">=</span> X_train<span style="color:#f92672">.</span>shape[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>output_dim <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span> <span style="color:#75715e"># because we have only 2 targets</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> create_model(input_dim, <span style="color:#ae81ff">1500</span>, <span style="color:#ae81ff">1000</span>, output_dim)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>summary()
+</span></span></code></pre></div><pre tabindex="0"><code>Model: &#34;sequential_2&#34;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_8 (Dense)             (None, 1500)              1336500   
+                                                                 
+ dense_9 (Dense)             (None, 1000)              1501000   
+                                                                 
+ dense_10 (Dense)            (None, 1000)              1001000   
+                                                                 
+ dense_11 (Dense)            (None, 2)                 2002      
+                                                                 
+=================================================================
+Total params: 3840502 (14.65 MB)
+Trainable params: 3840502 (14.65 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+</code></pre><p>Now, we train the model</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Schedule early stopping so that model can be stopped when there is no longer improvement</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># after at least 5 steps.</span>
+</span></span><span style="display:flex;"><span>epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>es <span style="color:#f92672">=</span> EarlyStopping(monitor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;val_loss&#39;</span>, mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;min&#39;</span>, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, patience<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Schedule learning rate when you hit a plateau</span>
+</span></span><span style="display:flex;"><span>lr <span style="color:#f92672">=</span> ReduceLROnPlateau(monitor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;val_loss&#39;</span>, factor<span style="color:#f92672">=</span><span style="color:#ae81ff">0.1</span>, patience<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, min_delta<span style="color:#f92672">=</span><span style="color:#ae81ff">1E-7</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>history <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(X_train, y_train, epochs<span style="color:#f92672">=</span>epochs, batch_size<span style="color:#f92672">=</span>batch_size,
+</span></span><span style="display:flex;"><span>                    validation_data<span style="color:#f92672">=</span>(X_test, y_test),callbacks<span style="color:#f92672">=</span>[es,lr])
+</span></span></code></pre></div><pre tabindex="0"><code>Epoch 1/20
+1210/1210 [==============================] - 22s 16ms/step - loss: 0.0424 - accuracy: 0.9875 - val_loss: 0.0368 - val_accuracy: 0.9895 - lr: 0.0010
+Epoch 2/20
+1210/1210 [==============================] - 13s 9ms/step - loss: 0.0363 - accuracy: 0.9894 - val_loss: 0.0371 - val_accuracy: 0.9905 - lr: 0.0010
+Epoch 3/20
+1210/1210 [==============================] - 17s 13ms/step - loss: 0.0355 - accuracy: 0.9895 - val_loss: 0.0343 - val_accuracy: 0.9906 - lr: 0.0010
+Epoch 4/20
+1210/1210 [==============================] - 14s 10ms/step - loss: 0.0353 - accuracy: 0.9896 - val_loss: 0.0349 - val_accuracy: 0.9906 - lr: 0.0010
+Epoch 5/20
+1210/1210 [==============================] - 13s 9ms/step - loss: 0.0350 - accuracy: 0.9896 - val_loss: 0.0354 - val_accuracy: 0.9905 - lr: 0.0010
+Epoch 6/20
+1210/1210 [==============================] - 13s 10ms/step - loss: 0.0347 - accuracy: 0.9897 - val_loss: 0.0361 - val_accuracy: 0.9902 - lr: 0.0010
+Epoch 6: early stopping
+</code></pre><p>Let&rsquo;s print the training history:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pyplot<span style="color:#f92672">.</span>plot(history<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;loss&#39;</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;train&#39;</span>)
+</span></span><span style="display:flex;"><span>pyplot<span style="color:#f92672">.</span>plot(history<span style="color:#f92672">.</span>history[<span style="color:#e6db74">&#39;val_loss&#39;</span>], label<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;test&#39;</span>)
+</span></span><span style="display:flex;"><span>pyplot<span style="color:#f92672">.</span>legend()
+</span></span><span style="display:flex;"><span>pyplot<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>We save this model like this and calculate our metrics</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Casing_model&#39;</span>
+</span></span><span style="display:flex;"><span>model_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,model_name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>save(model_path)
+</span></span></code></pre></div><p>Let&rsquo;s evaluate our model using accuracy, precision, recall, F1 score</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> f1_score, precision_score , recall_score, accuracy_score
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Error Functions and evaluation</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Use this functions to perform f1_score, recall and precision for error analysis.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_metrics</span>(cat_target , y_true, y_pred):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># For each label classification , we create a case of &#39;has label&#39; and &#39;has no label&#39;.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># For example, for the &#39;I&#39; label, we convert all predictions into 1 for &#39;I&#39; and 0 for not &#39;I&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    y_true <span style="color:#f92672">=</span> list(np<span style="color:#f92672">.</span>argmax(y_true, <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;True predictions must be in categorical format.&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  y_pred <span style="color:#f92672">=</span> list(np<span style="color:#f92672">.</span>argmax(y_pred,<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>  f1_scores <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  recall_scores <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  precision_scores <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  accuracy_scores <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  target <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> label_tag , value <span style="color:#f92672">in</span> cat_target<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>    true <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    pred <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> true_val, pred_val <span style="color:#f92672">in</span> zip(y_true, y_pred):
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> true_val <span style="color:#f92672">==</span> value:
+</span></span><span style="display:flex;"><span>        true<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        true<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> pred_val <span style="color:#f92672">==</span> value:
+</span></span><span style="display:flex;"><span>        pred<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        pred<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    accuracy <span style="color:#f92672">=</span> round(accuracy_score(true, pred),<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    f1 <span style="color:#f92672">=</span> round(f1_score(true, pred),<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    precision <span style="color:#f92672">=</span> round(precision_score(true,pred),<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    recall <span style="color:#f92672">=</span> round(recall_score(true, pred),<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># append scores and appropriate target.</span>
+</span></span><span style="display:flex;"><span>    target<span style="color:#f92672">.</span>append(label_tag)
+</span></span><span style="display:flex;"><span>    accuracy_scores<span style="color:#f92672">.</span>append(accuracy)
+</span></span><span style="display:flex;"><span>    f1_scores<span style="color:#f92672">.</span>append(f1)
+</span></span><span style="display:flex;"><span>    precision_scores<span style="color:#f92672">.</span>append(precision)
+</span></span><span style="display:flex;"><span>    recall_scores<span style="color:#f92672">.</span>append(recall)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;         |       Accuracy Score|        Precision|        Recall|       F1|&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;-----------------------------------------------------------------------------------&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(cat_target<span style="color:#f92672">.</span>keys())):
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>target[i]<span style="color:#e6db74">}</span><span style="color:#e6db74">             </span><span style="color:#e6db74">{</span>accuracy_scores[i]<span style="color:#e6db74">}</span><span style="color:#e6db74">                 </span><span style="color:#e6db74">{</span>precision_scores[i]<span style="color:#e6db74">}</span><span style="color:#e6db74">                 </span><span style="color:#e6db74">{</span>recall_scores[i]<span style="color:#e6db74">}</span><span style="color:#e6db74">                   </span><span style="color:#e6db74">{</span>f1_scores[i]<span style="color:#e6db74">}</span><span style="color:#e6db74">  &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>y_pred <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(X_test)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>calculate_metrics(case_cat_targ, y_test, y_pred)
+</span></span></code></pre></div><pre tabindex="0"><code>         |       Accuracy Score|        Precision|        Recall|       F1|
+-----------------------------------------------------------------------------------
+T             0.99                 0.96                 0.91                   0.94  
+N             0.99                 0.99                 1.0                   0.99  
+</code></pre><h2 id="tying-it-all-together">Tying It All Together</h2>
+<p>We are going to combine the predictive power of all the models and their processing pipelines into one function. We define all the functions needed for this in the code snippet below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convert_predictions</span>(pred, label_dict):
+</span></span><span style="display:flex;"><span>  result <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  pred  <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>argmax(pred,<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> val <span style="color:#f92672">in</span> list(pred):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> label, value <span style="color:#f92672">in</span> label_dict<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> val <span style="color:#f92672">==</span> value:
+</span></span><span style="display:flex;"><span>        result<span style="color:#f92672">.</span>append(label)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_word_results</span>(chars,predictions):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#targets are : S for single word, E for end of word, I for inside word, B for beginning of word.</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;processing text into words ...&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> char , prediction <span style="color:#f92672">in</span> zip(chars, predictions):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> prediction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;S&#39;</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> prediction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;E&#39;</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> prediction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;B&#39;</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> char
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Word segmentation completed.&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Now processing words into sentences...&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> full_text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_sent_result</span>(words, predictions):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># For the sentences, we are going to tag a word with &#39;E&#39; if it ends the sentence (comes before the full stop)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># and tag a word with &#39;P&#39; (pause) if it comes before a comma and tag a word inside a sentence with an &#39;I&#39;</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Constructing sentences and adding commas now ....&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> word, prediction <span style="color:#f92672">in</span> zip(words, predictions):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> prediction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;E&#39;</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> word
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;. &#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> prediction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;P&#39;</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> word
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39;, &#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> word
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Sentence successfully constructed.&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Now preparing sentences and casing relevant words..&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Please, have some popcorn while you wait...&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> full_text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_case_result</span>(words, predictions):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># For true casing of words in sentecnes , we are going to tag a word as &#39;T&#39; for titled if the first letter of the word is in capital</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># and tag it &#39;N&#39; for not titled if the first letter isnt a capital letter.</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Casing sentences appropriately...&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> word , prediction <span style="color:#f92672">in</span> zip(words, predictions):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> prediction <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;T&#39;</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> word<span style="color:#f92672">.</span>capitalize()
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> word
+</span></span><span style="display:flex;"><span>      full_text <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#39; &#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Sentences completey cased. Now returning result... &#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> full_text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># function that changes any new tag in a new corpus to an UNK value.</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">change_tag</span>(tag_list, tag, least_tag):
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> tag <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> tag_list:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> least_tag
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> tag
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> time <span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process_raw_text</span>(raw_text,fill_tag <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;WRB+DOZ&#39;</span>, FILE_PATH<span style="color:#f92672">=</span>FILE_PATH):
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># The full text here is raw text without any processing (just letters with no space)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#assert type(raw_text) == str</span>
+</span></span><span style="display:flex;"><span>  start_time <span style="color:#f92672">=</span> time()
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Processing data for word segmentation...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> list(raw_text)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#39;Characters&#39;</span>: full_text})
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># extract context</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Extracting features for each character in text...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#full_text = extract_context(full_text,n_gram=2)</span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> process_char_dataset(full_text,n_gram<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Load transformer</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Transforming characters...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    char_transformer <span style="color:#f92672">=</span> load(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;char_pipeline_transformer&#39;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;Character transformer not found in the current directory.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> char_transformer<span style="color:#f92672">.</span>transform(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># # predict with trained model.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># # Load model first</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Loading model and predicting character identities... </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>load_model(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;word_segmentor&#39;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;word segmentor model not found in the current directory.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>  predictions <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># # process result here</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Processing results and segmenting characters into words.....</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  predictions <span style="color:#f92672">=</span> convert_predictions(predictions, word_cat_targ )
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#print(&#39;Char predictions&#39; , predictions[:5])</span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> process_word_results(list(raw_text), predictions)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#print(&#39;processed to word&#39;, full_text[:15])</span>
+</span></span><span style="display:flex;"><span>  word_time <span style="color:#f92672">=</span> time()
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Done (completed in </span><span style="color:#e6db74">{</span>(word_time <span style="color:#f92672">-</span> start_time)<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds).</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># # Process data for sentence model</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Now, processing words for sentence identification and segmentation... </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> nltk<span style="color:#f92672">.</span>word_tokenize(full_text)
+</span></span><span style="display:flex;"><span>  word_to_tag <span style="color:#f92672">=</span> nltk<span style="color:#f92672">.</span>pos_tag(full_text)
+</span></span><span style="display:flex;"><span>  tags <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  words <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> word, tag <span style="color:#f92672">in</span> word_to_tag:
+</span></span><span style="display:flex;"><span>    words<span style="color:#f92672">.</span>append(word)
+</span></span><span style="display:flex;"><span>    tags<span style="color:#f92672">.</span>append(tag)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># # Process data for sentence transformer model</span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#39;words&#39;</span>: words, <span style="color:#e6db74">&#39;tags&#39;</span>: tags})
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">#rint(len(full_text[&#39;tags&#39;].unique()))</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Load tags list</span>
+</span></span><span style="display:flex;"><span>  tag_list <span style="color:#f92672">=</span> load(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;tags_list&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># change previously unseen tags in this new corpus to the least tag during training of our model.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># The assumption is that this unseen tags would also occur less in this new data corpus.</span>
+</span></span><span style="display:flex;"><span>  full_text[<span style="color:#e6db74">&#39;tags&#39;</span>] <span style="color:#f92672">=</span> full_text[<span style="color:#e6db74">&#39;tags&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: change_tag(tag_list,x,fill_tag))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Processing words and transforming words appropriately...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> process_sent_data(full_text, n_gram<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Loading transformer and transforming data...&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    sent_transformer <span style="color:#f92672">=</span> load(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH, <span style="color:#e6db74">&#39;sentence_transformer&#39;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;sentence transformer not found in current directory.&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> sent_transformer<span style="color:#f92672">.</span>transform(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Load sentence model</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Loading model and predicting word identities...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>load_model(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;Comma_sentence_segmentor&#39;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;sentence segmentor model not found in current directory.&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>  result <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># # process results here</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Processing results and segmenting words to sentences appropriately...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  predictions <span style="color:#f92672">=</span> convert_predictions(result, sent_cat_targ )
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> process_sent_result(words, predictions)
+</span></span><span style="display:flex;"><span>  sent_time <span style="color:#f92672">=</span> time()
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Done (completed in </span><span style="color:#e6db74">{</span>(sent_time <span style="color:#f92672">-</span> word_time)<span style="color:#f92672">/</span><span style="color:#ae81ff">60</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> mins).</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74"> &#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># process and preprocess text for the casing transformer</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Finally, processing sentences for appropriate casing of words...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> nltk<span style="color:#f92672">.</span>word_tokenize(full_text)
+</span></span><span style="display:flex;"><span>  text_to_tag <span style="color:#f92672">=</span> nltk<span style="color:#f92672">.</span>pos_tag(full_text)
+</span></span><span style="display:flex;"><span>  tags <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>  words <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> word , tag <span style="color:#f92672">in</span> text_to_tag:
+</span></span><span style="display:flex;"><span>    words<span style="color:#f92672">.</span>append(word)
+</span></span><span style="display:flex;"><span>    tags<span style="color:#f92672">.</span>append(tag)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame({<span style="color:#e6db74">&#39;words&#39;</span>: words , <span style="color:#e6db74">&#39;tags&#39;</span>: tags})
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Load tags list</span>
+</span></span><span style="display:flex;"><span>  case_tag_list <span style="color:#f92672">=</span> load(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH,<span style="color:#e6db74">&#39;case_tag_list&#39;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># change previously unseen tags to &#39;WRB+DOZ&#39; which was the least occuring tag during training.</span>
+</span></span><span style="display:flex;"><span>  full_text[<span style="color:#e6db74">&#39;tags&#39;</span>] <span style="color:#f92672">=</span> full_text[<span style="color:#e6db74">&#39;tags&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: change_tag(case_tag_list,x,least_tag))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># process data for transformer model</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Processing words and sentences for transformer model...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> process_case_data(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Transform data</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Loading and transforming processed data...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    case_transformer <span style="color:#f92672">=</span> load(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH, <span style="color:#e6db74">&#39;case_pipeline&#39;</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#print(&#39;case transformer loaded..&#39;)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;case transformer was not found in the current directory.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> case_transformer<span style="color:#f92672">.</span>transform(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Load casing model</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Loading model and predicting appropriate words for casing... </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    model <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>models<span style="color:#f92672">.</span>load_model(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(FILE_PATH, <span style="color:#e6db74">&#39;Casing_model&#39;</span>))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#39;casing model could not be found in the current directory.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  result <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>predict(full_text)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># Process final result here</span>
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Processing result and producing final format...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  predictions <span style="color:#f92672">=</span> convert_predictions(result, case_cat_targ)
+</span></span><span style="display:flex;"><span>  full_text <span style="color:#f92672">=</span> process_case_result(words, predictions)
+</span></span><span style="display:flex;"><span>  case_time <span style="color:#f92672">=</span> time()
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Done (completed in </span><span style="color:#e6db74">{</span>(case_time <span style="color:#f92672">-</span> sent_time)<span style="color:#e6db74">}</span><span style="color:#e6db74"> seconds).</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">)&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;Returning final processed result...</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Whole task was completed in </span><span style="color:#e6db74">{</span>(case_time <span style="color:#f92672">-</span> start_time)<span style="color:#f92672">/</span><span style="color:#ae81ff">60</span><span style="color:#e6db74">}</span><span style="color:#e6db74"> mins.&#39;</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">200</span>)
+</span></span><span style="display:flex;"><span>  print(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> full_text
+</span></span></code></pre></div><p>Lets test it all at once. We have our models saved to file.
+We will use the first genre of the brown corpus for this. We will extract the text and remove all space, comma, full stop characters and casing from the text. Then we will run it through the <!-- raw HTML omitted -->process_raw_text<!-- raw HTML omitted --> function to intuitively analyze the performance of the models combined.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>corpus <span style="color:#f92672">=</span> brown<span style="color:#f92672">.</span>words(categories<span style="color:#f92672">=</span>brown<span style="color:#f92672">.</span>categories()[<span style="color:#ae81ff">0</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> word <span style="color:#f92672">in</span> corpus:
+</span></span><span style="display:flex;"><span>  text <span style="color:#f92672">+=</span> word<span style="color:#f92672">.</span>lower()
+</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;.&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>text <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;,&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>)
+</span></span><span style="display:flex;"><span>text
+</span></span></code></pre></div><p>This is what the raw text looks like when all the above are removed.</p>
+<pre tabindex="0"><code>&#39;danmorgantoldhimselfhewouldforgetannturnerhewaswellridofherhecertainlydidn&#39;twantawifewhowasfickleasannifhehadmarriedherhe&#39;dhavebeenaskingfortroublebutallofthiswasrationalizationsometimeshewokeupinthemiddleofthenightthinkingofannandthencouldnotgetbacktosleephisplansanddreamshadrevolvedaroundhersomuchandforsolongthatnowhefeltasifhehadnothingtheeasiestthingwouldbetosellouttoalbuddandleavethecountrybuttherewasastubbornstreakinhimthatwouldn&#39;tallowitthebestantidoteforthebitternessanddisappointmentthatpoisonedhimwashardworkhefoundthatifhewastiredenoughatnighthewenttosleepsimplybecausehewastooexhaustedtostayawakeeachdayhefoundhimselfthinkinglessoftenofann;;eachdaythehurtwasalittledulleralittlelesspoignanthehadplentyofworktodobecausethesummerwasunusuallydryandhotthespringproducedasmallerstreamthaninordinaryyearsthegrassinthemeadowscamefastnowthatthewarmweatherwasherehecouldnotaffordtoloseadropofthepreciouswatersohespentmostofhiswakinghoursalongtheditchesinhismeadowshehadnoideahowmuchtimebuddwou...&#39;
+</code></pre><p>Now, let&rsquo;s run this text chunk through our series of models to process and reformat the text.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># We will be using &#39;WRB+DOZ&#39; as our fill_na values throughout.</span>
+</span></span><span style="display:flex;"><span>process_raw_text(text, least_tag)
+</span></span></code></pre></div><pre tabindex="0"><code>dan morgan told himself he would forget ann turner he was well rid of her he certainly did n&#39;t want a wife who was fickle as ann if he had married her he &#39;d have been asking for trouble but all of this was rationalization sometime she woke up in the middle of the night thinking of ann and then could not get back to sleep his plans and dreams had revolved around her so much and for so long that now he felt as if he had nothing the easiest thing would be to sell out to al budd and leave the country but there was a s tubborn streak in him that would n&#39;t allow it the bestant i dote for the bitterness and dis appointment that pois oned him was hard work he found that if he was tired enough at nighthe went to sleep simply because he was too exhausted to stay awake each day he found himself thinkingless oft en of ann ; ; each day the hurt was a little duller a little les s poignan the had plenty of work to do be cause the summer was unusually dry and hot the spring produced a smaller stream...&#39;
+</code></pre><p>We can see that our model did a really good job with processing this text here! Just amazing!!</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The culmination of these efforts resulted in a highly accurate system for processing unstructured raw text. With an accuracy of approximately 97%, this system can effectively segment words and sentences, as well as capitalize words correctly.</p>
+<p>This system has the potential to revolutionize the way we interact with raw text. It can be used to pre-process data for various NLP tasks such as text classification, sentiment analysis, and machine translation.</p>
+<p>The journey of developing this machine learning system has surely been an enriching and enlightening experience. It will not only deepen your understanding of NLP but also spark your passion for unlocking the secrets hidden within text.</p>
+<p>I hope you&rsquo;ve enjoyed this article series and found it both informative and engaging. If you have any questions or feedback, please feel free to <!-- raw HTML omitted --> contact me<!-- raw HTML omitted -->.</p>
+
+</div>
+
+</section>
+<footer id="footer">
+    <strong></strong>
+    <div class="social">
+        &nbsp;
+<a href="https://github.com/pauljeffrey" target="_blank" rel="me" title="Github" referrerpolicy="no-referrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+	stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+	<path
+		d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+	</path>
+</svg>
+</a>
+&nbsp;&nbsp;
+<a href="drjeffreypaul@gmail.com" target="_blank" rel="me" title="Email" referrerpolicy="no-referrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+	stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+	<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+	<polyline points="22,6 12,13 2,6"></polyline>
+</svg>
+</a>
+&nbsp;&nbsp;
+<a href="https://twitter.com/Jeffreypaul_" target="_blank" rel="me" title="Twitter" referrerpolicy="no-referrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+	stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+	<path
+		d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+	</path>
+</svg>
+</a>
+&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/jeffreyotoibhi/" target="_blank" rel="me" title="Linkedin" referrerpolicy="no-referrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+	stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+	<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+	<rect x="2" y="9" width="4" height="12"></rect>
+	<circle cx="4" cy="4" r="2"></circle>
+</svg>
+</a>
+&nbsp;
+    </div><strong></strong>
+    <p style="color:grey;">© 2024 Jeffrey Paul.  <a href="https://creativecommons.org/licenses/by/4.0/">Some rights reserved</a>.</p>
+</footer>
+</div>
+    </body>
+</html>

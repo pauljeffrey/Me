@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Natural Language Processing on Jeffrey Paul</title>
+    <link>http://localhost:1313/tags/natural-language-processing/</link>
+    <description>Recent content in Natural Language Processing on Jeffrey Paul</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 03 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/natural-language-processing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rotary Positional Embeddings</title>
+      <link>http://localhost:1313/post/rope/</link>
+      <pubDate>Wed, 03 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/rope/</guid>
+      <description>Some texts&#xA;Demystifying Rope Embeddings: A Comprehensive Guide Embeddings have become a cornerstone in the field of natural language processing (NLP), helping machines understand and process human language. Among the various types of embeddings, rope embeddings, positional embeddings, and trainable embeddings play crucial roles. In this article, we will explore rope embeddings in depth, understand their purpose, and compare them with positional and trainable embeddings.&#xA;Introduction to Embeddings Embeddings are a way to represent words, phrases, or even sentences as continuous vectors in a high-dimensional space.</description>
+    </item>
+    <item>
+      <title>Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)</title>
+      <link>http://localhost:1313/post/sentence-segmentation/</link>
+      <pubDate>Tue, 06 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/sentence-segmentation/</guid>
+      <description>Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2) In the Part 1 of this article, we focused on training a Neural Network that can segment a raw sequence (stream) of text characters into words and we were able to achieve an accuracy of about 95% using some complex feature engineering. By the way, if you have not checked out the Part 1 of this lovely project&amp;rsquo;s article, you can find it here .</description>
+    </item>
+    <item>
+      <title>Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 1)</title>
+      <link>http://localhost:1313/post/word-segmentation/</link>
+      <pubDate>Sat, 03 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/word-segmentation/</guid>
+      <description>Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 1) Introduction In the realm of Natural Language Processing (NLP), engineers/data scientist can sometimes be faced with raw, unprocessed text which may present a unique challenge. Unlike structured or clean data, raw text may lack word boundaries, sentence boundaries, and proper noun identification. It&amp;rsquo;s a jumbled mess of letters that can leave even the most seasoned NLP engineer scratching their heads.</description>
+    </item>
+    <item>
+      <title>Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3)</title>
+      <link>http://localhost:1313/post/true-casing/</link>
+      <pubDate>Sat, 03 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/post/true-casing/</guid>
+      <description>Title: Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 3) Introduction The final piece of the puzzle is to capitalize the first letter of each sentence and other words that need to be cased (e.g nouns). This not only enhances readability but also provides valuable contextual information. By the way, if you have not checked out the first 2 parts of this lovely project&amp;rsquo;s article, you can find it here .</description>
+    </item>
+  </channel>
+</rss>
