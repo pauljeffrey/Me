@@ -3,6 +3,9 @@ author: "Paul Jeffrey"
 title: "Demystifying Rope Embeddings: A Comprehensive Guide"
 date: "2024-05-14"
 draft: false
+cover:
+    image: "images/Rope/Blog Image.jpg"
+    alt: 'ROPE'
 description: "Demystifying Rope Embeddings: A Comprehensive Guide"
 tags: [
     "neural networks","natural language processing","Embeddings"
@@ -20,7 +23,7 @@ Embeddings have become a cornerstone in the field of natural language processing
 Embeddings are a way to represent words, phrases, or even sentences as continuous vectors in a high-dimensional space. These vectors capture semantic meanings and relationships between different pieces of text. The idea is that similar words will have similar vector representations, allowing models to generalize better from the data.
 
 ## What Are Rope Embeddings?
-
+<img src="images/Rope/Rope embeddings.png" alt="rope embeddings image">
 Rope embeddings, short for "Rotary Positional Embeddings," are a type of positional encoding introduced to address the limitations of traditional positional embeddings in transformer models. They were proposed in the paper "Rotary Position Embedding" by Su et al. in 2021.
 
 ### Why Do We Need Positional Information?
@@ -77,6 +80,7 @@ print(output_tensor.shape)
 
 Positional embeddings are another way to encode positional information in transformer models. The most common approach, introduced in the original Transformer paper "Attention is All You Need" by Vaswani et al., uses fixed sinusoidal functions to represent positions.
 
+<img src="images/Rope/positional embedding1.png" alt="positional embeddings image">
 ### How Positional Embeddings Work
 
 Positional embeddings use sine and cosine functions of different frequencies to encode the position of each word in the sequence. For a position \( p \) and dimension \( i \), the positional embedding is defined as:
@@ -130,6 +134,7 @@ print(output_tensor.shape)
 
 Trainable embeddings, also known as learned embeddings, are vectors that are learned during the training process. These embeddings can represent words, subwords, or even positions in a sequence.
 
+<img src="images/Rope/trainable embedding.png" alt="trainable embeddings image">
 ### How Trainable Embeddings Work
 
 In a trainable embedding layer, each word or token in the vocabulary is associated with a vector that is initialized randomly and updated during training. For positional information, a separate set of trainable embeddings can be used to represent the position of each token.
