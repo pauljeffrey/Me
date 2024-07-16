@@ -19,7 +19,7 @@ menu:
       url: /post/
     - identifier: resume
       name: resume
-      url: /resume
+      url: /resume/resume
       weight: 200
 
 params:
