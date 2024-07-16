@@ -4,7 +4,7 @@ title: "Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Seg
 date: "2023-11-03"
 draft: false
 cover:
-    image: "images/Text segmentation/word segmentation.jpg"
+    image: "/static/images/Text segmentation/word segmentation.jpg"
     alt: 'Word Segmentation'
 description: "A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 1)"
 tags: [

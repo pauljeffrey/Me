@@ -4,7 +4,7 @@ title: "Demystifying Rope Embeddings: A Comprehensive Guide"
 date: "2024-05-14"
 draft: false
 cover:
-    image: "images/Rope/Blog Image.jpg"
+    image: "/static/images/Rope/Blog Image.jpg"
     alt: 'ROPE'
 description: "Demystifying Rope Embeddings: A Comprehensive Guide"
 tags: [
@@ -34,7 +34,7 @@ Transformers, unlike recurrent neural networks (RNNs), do not have an inherent s
 
 Rope embeddings use sinusoidal functions to encode positional information. The key idea is to represent positions as complex numbers on the unit circle. For a given position \( p \), the positional embedding is defined as:
 
-\[ E_p = [\sin(p \cdot \omega_k), \cos(p \cdot \omega_k)] \]
+\[ E_p = \left[ \sin(p \cdot \omega_k), \cos(p \cdot \omega_k) \right] \]
 
 where \( \omega_k \) is a frequency specific to the dimension \( k \).
 
