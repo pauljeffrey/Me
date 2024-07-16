@@ -3,6 +3,9 @@ author: "Paul Jeffrey"
 title: "Unraveling the Secrets of Raw Text: A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)"
 date: "2023-11-21"
 draft: false
+cover:
+    image: "images/Text segmentation/Sentence Segmentation.jpg"
+    alt: 'Sentence Segmentation'
 description: "A Journey Through Word, Sentence Segmentation and Capitalization with Python (Part 2)"
 tags: [
     "neural networks","natural language processing","word segmentation"
